@@ -308,7 +308,7 @@ def draw_timer(screen, font):
     pygame.draw.rect(screen, bg_color, box_rect, border_radius=8)
     pygame.draw.rect(screen, BLACK, box_rect, width=2, border_radius=8)
 
-    text = font.render(str(max(0, time_left)), True, WHITE)
+    text = font.render(str(max(0, int(time_left))), True, WHITE)
     text_rect = text.get_rect(center=box_rect.center)
     screen.blit(text, text_rect)
 
@@ -316,7 +316,7 @@ def draw_timer(screen, font):
 def equal(val):
     global time_left, timer_flash, timer_flash_color
     delta = float(val)
-    time_left = max(0, int(time_left + delta))
+    time_left = max(0, time_left + delta)
     timer_flash = TIMER_FLASH_FRAMES
     timer_flash_color = GREEN if delta >= 0 else RED
 
@@ -391,7 +391,7 @@ while True:
         if timer_flash > 0:
             timer_flash -= 1
 
-        time_left -= 1
+        time_left -= 0.5
         if time_left <= 0:
             time_left = 0
             game_over = True
