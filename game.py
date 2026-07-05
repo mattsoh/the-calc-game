@@ -1,11 +1,29 @@
+'''
+Hiii!
+
+Basically this is a game where you try to add time to a timer.
+
+(and if the timer reaches zero, you lose).
+
+To add time, you have to construct an expression and reach the equals button (=).
+
+To activate numbers / symbols, touch the red platforms below the corersponding symbol (which will fall after a few seconds then respawn)
+
+To add time when touching the equals button, you must have touched an operator to be able to receive time.
+
+This means that typing, for example, 1234= will not give you 1234 in time.
+
+The time decreases by 2 for every frame (with 60fps).
+
+'''
+
+
 import sys
 import pygame
 import random
 import math
 from asteval import Interpreter
 
-import pygame
-import sys
 
 WIDTH, HEIGHT = 800,600
 PLAYER_SPEED = 3
@@ -52,6 +70,7 @@ class Player(pygame.sprite.Sprite):
         self.vel_x = 0
         self.vel_y = 0
         self.on_ground = False
+        self.dead = False
 
     def update(self, platforms):
         keys = pygame.key.get_pressed()
@@ -74,8 +93,7 @@ class Player(pygame.sprite.Sprite):
         self._collide_y(platforms)
 
         if self.rect.top > HEIGHT:
-            self.rect.topleft = (100,100)
-            self.vel_y = 0
+            self.dead = True
     
     def _collide_x(self, platforms):
         for p in platforms:
@@ -146,6 +164,8 @@ TIMER_FLASH_FRAMES = int(0.3 * FPS)
 TIMER_BOX_W, TIMER_BOX_H = 150, 56
 TIMER_BOX_MARGIN = 16
 
+REPLAY_BTN_W, REPLAY_BTN_H = 160, 50
+
 class ActivePlatform(Platform):
     """Red platform ledge: shakes when touched, falls away, then respawns."""
 
@@ -179,10 +199,12 @@ class ActivePlatform(Platform):
                         state_curr += '.' 
                 operator_pressed = False
             elif self.label == '√':
-                state_curr = str(math.sqrt(float(state_curr)))
+                sqr = math.sqrt(float(state_curr))
+                state_curr = str(int(sqr)) if int(sqr) == sqr else str(sqr)
                 operator_pressed = False
             elif self.label == '%':
-                state_curr = str(float(state_curr) / 100)
+                pct = float(state_curr) / 100
+                state_curr = str(int(pct)) if int(pct) == pct else str(pct)
                 operator_pressed = False
             elif self.label == 'CE':
                 state_curr = state_prev
@@ -251,7 +273,11 @@ active_platforms = []
 time_left = TIMER_START_FRAMES
 timer_flash = 0  # frames remaining to show the flash color
 timer_flash_color = None
+timer_delta_text = ""  # e.g. "+50" or "-30", shown as a badge while flashing
 game_over = False
+frames_survived = 0
+high_score = 0
+replay_button_rect = None
 
 
 def create_calculator_buttons():
@@ -340,8 +366,6 @@ for row_i in range(1, len(ROWS)+1):
         platform_list.append(Platform(x,y,40, 6))
 
 platforms = pygame.sprite.Group(
-    Platform(0, HEIGHT - 40, WIDTH, 40),   # temp ground
-
     *platform_list
 )
 # OK so simple calculators store two things: State A (previous total), operator, and State B (current total)/
@@ -363,7 +387,7 @@ running = True
 
 
 
-player = Player(100, 100)
+player = Player(WIDTH // 2 + 50, 100)
 active_buttons = create_calculator_buttons()
 
 active_platforms = []
@@ -387,6 +411,9 @@ while True:
         player.update(platforms)
         platforms.update()
 
+        if player.dead:
+            game_over = True
+
         if timer_flash > 0:
             timer_flash -= 1
 
@@ -407,4 +434,3 @@ while True:
         screen.blit(text, text_rect)
 
     pygame.display.flip()
-pygame.quit()
