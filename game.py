@@ -170,7 +170,6 @@ class ActivePlatform(Platform):
                         state_curr = '0.'
                 else:
                     if '.' not in state_curr or self.label != '.':
-                        print(state_curr, self.label)
                         if state_curr == '0' and self.label != '.':
                             state_curr = self.label
                         else:
@@ -216,7 +215,7 @@ class ActivePlatform(Platform):
                 operator_pressed = True
                 
             display_text = state_curr if self.label != 'CE' else '0'
-            print(state_prev, operator, state_curr, display_text, operator_pressed)
+            #print(state_prev, operator, state_curr, display_text, operator_pressed)
 
     def update(self):
         if self.state == "shaking":
