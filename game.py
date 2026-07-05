@@ -6,7 +6,8 @@ import pygame
 import sys
 from setup import *
 
-
+# OK so simple calculators store two things: State A (previous total), operator, and State B (current total)/
+# Pressing execute will execute the instruction
 
 pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -37,9 +38,10 @@ while True:
             sys.exit()
 
     player.update(platforms)
+    platforms.update()
 
     screen.fill(WHITE)
-    draw_calculator(screen,active_buttons, pygame.font.SysFont("courier", 28, bold=True))
+    draw_calculator(screen,active_buttons, pygame.font.SysFont("courier", 28, bold=True), display_text='0')
     all_sprites.draw(screen)
     pygame.display.flip()
 pygame.quit()

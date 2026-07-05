@@ -1,7 +1,7 @@
 WIDTH, HEIGHT = 800,600
 PLAYER_SPEED = 3
 GRAVITY = 0.5 # see technically this is the player's weight
-JUMP_FORCE = -10
+JUMP_FORCE = -9
 
 WHITE = (255, 255, 255)
 BLUE = (50, 120, 200)
@@ -24,6 +24,7 @@ DISPLAY_H = 90
 PADDING = 16
 
 ROWS = [
+    ["%", "√", "CE", "C"],
     ["7", "8", "9", "/"],
     ["4", "5", "6", "*"],
     ["1", "2", "3", "-"],

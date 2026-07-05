@@ -1,5 +1,10 @@
 from asteval import Interpreter
 calc = Interpreter()
 
-print(calc("2*5"))
+def sqrt(x):
+    return int(calc(f"sqrt{x}"))
 
+def ev(x):
+    return int(calc(x))
+
+print(ev("3**3"))

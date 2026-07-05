@@ -10,6 +10,8 @@ from init.classes import *
 
 active_platforms = []
 
+time = 50
+
 
 def create_calculator_buttons():
     buttons = []
@@ -70,11 +72,10 @@ grid_top = CALC_Y + PADDING * 2 + DISPLAY_H
 
 platform_list = []
 
-for row_i, row in enumerate(ROWS):
-    for j in range (5): # random 5 platforms per row
+for row_i in range(1, len(ROWS)+1):
+    for j in range (4): # random 5 platforms per row
         x = random.random() * grid_w + PADDING + (btn_w + gap)
         y = grid_top + (row_i - random.random()+1) * ((grid_h - gap * (rows - 1)) / rows + gap)
-        print(x,y)
             
         platform_list.append(Platform(x,y,40, 6))
 
@@ -103,7 +104,7 @@ def main():
                 sys.exit()
 
         screen.fill(WHITE)
-        draw_calculator(screen, buttons, font)
+        draw_calculator(screen, buttons, font, display_text='0')
         pygame.display.flip()
 
 
