@@ -19,6 +19,7 @@ The time decreases by 2 for every frame (with 60fps).
 
 
 import sys
+import os
 import pygame
 import random
 import math
@@ -384,6 +385,14 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("calculator")
 clock = pygame.time.Clock()
 running = True
+
+MUSIC_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "music.mp3")
+if os.path.isfile(MUSIC_PATH):
+    try:
+        pygame.mixer.music.load(MUSIC_PATH)
+        pygame.mixer.music.play(-1)
+    except pygame.error:
+        pass
 
 
 
